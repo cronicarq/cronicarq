@@ -112,14 +112,13 @@ footer {
     }
 
     @media (max-width: 700px) {
-      :root { --page-gap: 8px; }
-
       .cover {
-        min-height: 54svh;
+        min-height: 52svh;
         padding:
-          max(58px, calc(env(safe-area-inset-top) + 18px))
-          30px
-          18px;
+          max(34px, calc(env(safe-area-inset-top) + 10px))
+          38px
+          12px;
+        align-items: flex-start;
       }
 
       .cover-inner {
@@ -128,34 +127,42 @@ footer {
       }
 
       .cover h1 {
-        font-size: clamp(54px, 14vw, 78px);
-        line-height: .94;
+        margin: 0;
+        font-size: clamp(56px, 14vw, 82px);
+        line-height: .90;
+        letter-spacing: -.05em;
+        font-weight: 700;
       }
 
       .cover p {
-        margin-top: 6px;
-        font-size: clamp(13px, 3.8vw, 20px);
+        margin-top: 4px;
+        font-size: clamp(14px, 3.8vw, 20px);
+        line-height: 1.05;
         letter-spacing: -.01em;
+        white-space: nowrap;
       }
 
       .viewer-shell {
-        padding: 8px 0 24px;
+        padding: 0 0 24px;
       }
 
       #viewer {
         width: 100%;
+        margin: 0;
       }
 
       .pdf-page {
+        width: 100%;
         box-shadow: none;
         contain-intrinsic-size: auto 560px;
       }
 
-      .zoom-controls {
-        right: 12px;
+      .pdf-page:first-child {
+        margin-top: 0;
       }
-footer {
-        padding: 18px 16px 84px;
+
+      footer {
+        padding: 18px 16px 24px;
         font-size: 10px;
       }
     }
