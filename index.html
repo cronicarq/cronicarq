@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=1920, initial-scale=0.2, minimum-scale=0.2, maximum-scale=5, user-scalable=yes, viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
   <meta name="description" content="Crónica Arquitectura — Prácticas sobre tiempo, memoria y espacio.">
   <title>Crónica Arquitectura</title>
@@ -155,9 +155,30 @@
         scroll-behavior: auto;
       }
     }
-  </style>
+  
+#fixed-canvas{
+  width:1920px;
+  max-width:none;
+  margin:0 auto;
+  transform-origin:top left;
+}
+@media (max-width:1920px){
+  #fixed-canvas{
+    transform:scale(calc(100vw / 1920));
+    height:calc((100vw / 1920) * 100%);
+  }
+  body{
+    overflow-x:auto;
+    overflow-y:auto;
+  }
+}
+
+</style>
 </head>
+
 <body>
+<div id="fixed-canvas">
+
 
   <section class="cover" aria-labelledby="titulo-principal">
     <div class="cover-inner">
@@ -273,5 +294,8 @@
     © 2026 Arturo Mata. Todos los derechos reservados. Las fotografías y textos contenidos en este portafolio no podrán reproducirse sin autorización expresa del autor.
   </footer>
 
+
+</div>
+</body>
 </body>
 </html>
