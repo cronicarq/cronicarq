@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta id="viewport-meta" name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
   <meta name="description" content="Crónica Arquitectura — Prácticas sobre tiempo, memoria y espacio.">
   <title>Crónica Arquitectura</title>
@@ -31,6 +31,8 @@
       font-family: Univers, "Univers Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
     .cover {
@@ -272,6 +274,41 @@
   <footer>
     © 2026 Arturo Mata. Todos los derechos reservados. Las fotografías y textos contenidos en este portafolio no podrán reproducirse sin autorización expresa del autor.
   </footer>
+
+
+  <script>
+    (() => {
+      const viewport = document.getElementById("viewport-meta");
+
+      const initialViewport =
+        "width=device-width, initial-scale=1, minimum-scale=1, " +
+        "maximum-scale=1, user-scalable=no, viewport-fit=cover";
+
+      const zoomableViewport =
+        "width=device-width, initial-scale=1, minimum-scale=1, " +
+        "maximum-scale=5, user-scalable=yes, viewport-fit=cover";
+
+      function restoreInitialView() {
+        /*
+         * Safari puede conservar el nivel de zoom después de una recarga.
+         * Se bloquea momentáneamente la escala en 1 y, cuando la vista ya
+         * fue restablecida, se vuelve a habilitar el zoom por pellizco.
+         */
+        viewport.setAttribute("content", initialViewport);
+
+        requestAnimationFrame(() => {
+          window.scrollTo(0, 0);
+
+          requestAnimationFrame(() => {
+            viewport.setAttribute("content", zoomableViewport);
+          });
+        });
+      }
+
+      window.addEventListener("pageshow", restoreInitialView);
+      window.addEventListener("load", restoreInitialView);
+    })();
+  </script>
 
 </body>
 </html>
