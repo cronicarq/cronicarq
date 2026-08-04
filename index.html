@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=1920, initial-scale=0.2, minimum-scale=0.2, maximum-scale=5, user-scalable=yes, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
   <meta name="description" content="Crónica Arquitectura — Prácticas sobre tiempo, memoria y espacio.">
   <title>Crónica Arquitectura</title>
@@ -157,19 +157,26 @@
     }
   
 #fixed-canvas{
-  width:1920px;
+  width:390px;
   max-width:none;
+  min-height:844px;
   margin:0 auto;
-  transform-origin:top left;
+  transform-origin:top center;
 }
-@media (max-width:1920px){
+
+body{
+  min-width:390px;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+
+@media (min-width:391px){
   #fixed-canvas{
-    transform:scale(calc(100vw / 1920));
-    height:calc((100vw / 1920) * 100%);
+    transform:scale(calc(100vw / 390));
   }
+
   body{
-    overflow-x:auto;
-    overflow-y:auto;
+    min-height:calc(844px * (100vw / 390));
   }
 }
 
