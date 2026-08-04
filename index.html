@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta id="viewport-meta" name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
   <meta name="description" content="Crónica Arquitectura — Prácticas sobre tiempo, memoria y espacio.">
   <title>Crónica Arquitectura</title>
@@ -11,21 +11,22 @@
     :root {
       --background: #ffffff;
       --ink: #181818;
-      --muted: #4e4e4e;
-      --line: rgba(24,24,24,.16);
+      --muted: #525252;
+      --line: rgba(24,24,24,.15);
+      --page-gap: clamp(18px, 2.5vw, 38px);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html {
-      scroll-behavior: smooth;
       background: var(--background);
+      scroll-behavior: smooth;
     }
 
     body {
       margin: 0;
+      overflow-x: hidden;
+      touch-action: auto;
       background: var(--background);
       color: var(--ink);
       font-family: Univers, "Univers Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -34,125 +35,92 @@
     }
 
     .cover {
-      min-height: 64vh;
+      min-height: 52svh;
       display: flex;
       align-items: flex-start;
-      padding: 10vh clamp(90px, 10vw, 180px) 24px;
+      padding:
+        max(34px, calc(env(safe-area-inset-top) + 10px))
+        38px
+        12px;
       background: var(--background);
     }
 
     .cover-inner {
-      width: min(1000px, 100%);
-      transform: translateX(5vw);
+      width: 100%;
+      margin: 0;
+      transform: none;
     }
 
     .cover h1 {
       margin: 0;
-      font-size: clamp(66px, 7.2vw, 118px);
-      line-height: .92;
-      letter-spacing: -.045em;
+      font-size: clamp(56px, 14vw, 82px);
+      line-height: .90;
+      letter-spacing: -.05em;
       font-weight: 700;
     }
 
     .cover p {
-      margin: 8px 0 0;
-      font-size: clamp(17px, 1.6vw, 28px);
-      line-height: 1.12;
+      margin: 4px 0 0;
       color: var(--muted);
+      font-size: clamp(14px, 3.8vw, 20px);
+      line-height: 1.05;
+      letter-spacing: -.01em;
       white-space: nowrap;
     }
 
-    .pages {
-      width: min(1380px, calc(100% - 48px));
-      margin: 0 auto;
-      padding: 34px 0 64px;
-      display: grid;
-      gap: clamp(18px, 2.5vw, 38px);
+    .viewer-shell {
+      width: 100%;
+      padding: 0 0 24px;
     }
 
-    .page {
+    #viewer {
+      width: 100%;
       margin: 0;
       display: grid;
-      place-items: center;
-      content-visibility: auto;
-      contain-intrinsic-size: auto 900px;
+      gap: 8px;
+      justify-items: center;
     }
 
-    .page img {
-      display: block;
+    .pdf-page {
+      position: relative;
       width: 100%;
-      height: auto;
       background: #fff;
-      box-shadow: 0 8px 28px rgba(0,0,0,.08);
+      box-shadow: none;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 560px;
     }
 
-    footer {
-      padding: 24px 32px;
+    .pdf-page canvas {
+      display: block;
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100%;
+    }
+
+    .loading,
+    .error {
+      min-height: 45vh;
+      display: grid;
+      place-items: center;
+      padding: 40px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .error a {
+      color: inherit;
+    }
+footer {
+      padding: 18px 16px 24px;
       border-top: 1px solid var(--line);
       color: #777;
-      font-size: 11px;
+      font-size: 10px;
       line-height: 1.45;
     }
 
-    @media (max-width: 700px) {
-      .cover {
-        min-height: 54svh;
-        padding:
-          max(58px, calc(env(safe-area-inset-top) + 18px))
-          30px
-          18px;
-      }
-
-      .cover-inner {
-        width: 100%;
-        transform: none;
-      }
-
-      .cover h1 {
-        font-size: clamp(54px, 14vw, 78px);
-        line-height: .94;
-      }
-
-      .cover p {
-        margin-top: 6px;
-        font-size: clamp(13px, 3.8vw, 20px);
-        line-height: 1.1;
-        letter-spacing: -.01em;
-      }
-
-      .pages {
-        width: 100%;
-        padding: 8px 0 24px;
-        gap: 8px;
-      }
-
-      .page {
-        display: block;
-        contain-intrinsic-size: auto 560px;
-      }
-
-      .page img {
-        width: 100%;
-        box-shadow: none;
-      }
-
-      footer {
-        padding: 18px 16px;
-        font-size: 10px;
-      }
-    }
-
-    @media (max-width: 360px) {
-      .cover p {
-        font-size: 12.5px;
-        letter-spacing: -.025em;
-      }
-    }
 
     @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
@@ -165,112 +133,127 @@
     </div>
   </section>
 
-  <main>
-    <section class="pages" aria-label="Portafolio Crónica Arquitectura">
-      <figure class="page" id="pagina-1">
-        <img
-          src="pagina-01.webp"
-          loading="eager"
-          decoding="async" fetchpriority="high"
-          alt="Página 1 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-2">
-        <img
-          src="pagina-02.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 2 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-3">
-        <img
-          src="pagina-03.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 3 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-4">
-        <img
-          src="pagina-04.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 4 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-5">
-        <img
-          src="pagina-05.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 5 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-6">
-        <img
-          src="pagina-06.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 6 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-7">
-        <img
-          src="pagina-07.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 7 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-8">
-        <img
-          src="pagina-08.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 8 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-9">
-        <img
-          src="pagina-09.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 9 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-10">
-        <img
-          src="pagina-10.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 10 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-11">
-        <img
-          src="pagina-11.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 11 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-12">
-        <img
-          src="pagina-12.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 12 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-13">
-        <img
-          src="pagina-13.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 13 de Crónica Arquitectura">
-      </figure>
-      <figure class="page" id="pagina-14">
-        <img
-          src="pagina-14.webp"
-          loading="lazy"
-          decoding="async"
-          alt="Página 14 de Crónica Arquitectura">
-      </figure>
-    </section>
+  <main class="viewer-shell">
+    <div id="viewer" aria-label="Portafolio Crónica Arquitectura">
+      <div class="loading" id="status">Preparando el portafolio…</div>
+    </div>
   </main>
-
-  <footer>
-    © 2026 Arturo Mata. Todos los derechos reservados. Las fotografías y textos contenidos en este portafolio no podrán reproducirse sin autorización expresa del autor.
+<footer>
+    © 2026 Arturo Mata. Todos los derechos reservados. Las fotografías y textos
+    contenidos en este portafolio no podrán reproducirse sin autorización expresa del autor.
   </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    (() => {
+      const PDF_URL = "cronica-arquitectura.pdf";
+      const viewer = document.getElementById("viewer");
+      const status = document.getElementById("status");
+
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+      let pdfDocument = null;
+      const zoom = 1;
+      let renderToken = 0;
+      let resizeTimer = null;
+
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+      function getViewerBaseWidth() {
+        return viewer.clientWidth;
+      }
+
+      async function renderPage(pageNumber, token) {
+        const page = await pdfDocument.getPage(pageNumber);
+        if (token !== renderToken) return;
+
+        const baseViewport = page.getViewport({ scale: 1 });
+        const targetCssWidth = getViewerBaseWidth() * zoom;
+        const cssScale = targetCssWidth / baseViewport.width;
+        const dpr = Math.min(window.devicePixelRatio || 1, 3);
+        const renderViewport = page.getViewport({ scale: cssScale * dpr });
+
+        const wrapper = document.createElement("article");
+        wrapper.className = "pdf-page";
+        wrapper.setAttribute("aria-label", `Página ${pageNumber}`);
+
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d", { alpha: false });
+
+        canvas.width = Math.floor(renderViewport.width);
+        canvas.height = Math.floor(renderViewport.height);
+        canvas.style.width = Math.floor(renderViewport.width / dpr) + "px";
+        canvas.style.height = Math.floor(renderViewport.height / dpr) + "px";
+
+        wrapper.style.width = canvas.style.width;
+        wrapper.appendChild(canvas);
+        viewer.appendChild(wrapper);
+
+        await page.render({
+          canvasContext: context,
+          viewport: renderViewport,
+          intent: "display"
+        }).promise;
+      }
+
+      async function renderDocument() {
+        if (!pdfDocument) return;
+
+        const token = ++renderToken;
+        viewer.innerHTML = "";
+
+        for (let pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber++) {
+          if (token !== renderToken) return;
+          await renderPage(pageNumber, token);
+        }
+      }
+
+      async function loadPdf() {
+        try {
+          pdfDocument = await pdfjsLib.getDocument(PDF_URL).promise;
+          status.remove();
+          await renderDocument();
+        } catch (error) {
+          console.error(error);
+          viewer.innerHTML = `
+            <div class="error">
+              <p>No fue posible cargar el portafolio.<br>
+              <a href="${PDF_URL}">Abrir el PDF directamente</a></p>
+            </div>`;
+        }
+      }
+
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(renderDocument, 180);
+      });
+
+      loadPdf();
+    })();
+  </script>
+
+  <script>
+    (() => {
+      const meta = document.getElementById("viewport-meta");
+      const locked = "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover";
+      const zoomable = "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover";
+
+      function resetInitialScale() {
+        meta.setAttribute("content", locked);
+        window.scrollTo(0, 0);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            meta.setAttribute("content", zoomable);
+          });
+        });
+      }
+
+      window.addEventListener("pageshow", resetInitialScale);
+      window.addEventListener("load", resetInitialScale);
+    })();
+  </script>
 
 </body>
 </html>
